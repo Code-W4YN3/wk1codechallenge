@@ -16,7 +16,7 @@ function speedDetector(speed){
     return judgement
   }
 }
-//Prompts user to input speed
+//Prompts user to input speed using prompt-sync extension
 const prompt = require('prompt-sync')();
 const speed = prompt('Enter car speed: ')
 // Returns vehicle speed, Demerit Points(if any), and a Judgement

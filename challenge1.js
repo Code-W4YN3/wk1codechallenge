@@ -20,7 +20,7 @@ function gradeMarks(marks){
     return "Invalid input! Make sure Input ranges between 0-100"
   }
 }
-//Prompts user to input marks
+//Prompts user to input marks using prompt-sync extension
 const prompt = require('prompt-sync')();
 const marks = prompt('Enter student marks: ')
 //Returns the marks input and corresponding grade

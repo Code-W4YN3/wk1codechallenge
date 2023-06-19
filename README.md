@@ -18,5 +18,7 @@ sources:
 https://www.aren.co.ke/payroll/taxrates.htmLinks to an external site.  
 
 https://www.kra.go.ke/en/individual/calculate-tax/calculating-tax/payeLinks to an external site.
+
+install prompt-sync extension to enable user prompt
   
 Author: Wayne Otido

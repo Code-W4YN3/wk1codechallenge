@@ -1,4 +1,4 @@
-//Prompts user to input Basic Salary and Benefits
+//Prompts user to input Basic Salary and Benefits using prompt-sync extension
 const prompt = require('prompt-sync')();
 const basicSalary = prompt('Enter Basic Salary: ')
 const benefits = prompt('Enter Benefits: ')
