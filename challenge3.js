@@ -1,86 +1,53 @@
+//Prompts user to input Basic Salary and Benefits
 const prompt = require('prompt-sync')();
-const salary = prompt('Enter basic salary: ')
-console.log(PAYE(salary))
-console.log(grossSalary(salary))
-
-//Calculates PAYE
-function PAYE(salary){
-  if(salary <= 24000){
-    Tax = salary * 10/100
-  }else if(salary > 24000 && salary <= 32333){
-    Tax = salary * 25/100
-  }else if(salary > 32333){
-    Tax = salary * 30/100
+const basicSalary = prompt('Enter Basic Salary: ')
+const benefits = prompt('Enter Benefits: ')
+// setting tax rates, nhif brackets and nssf rate
+const taxBrackets = [
+  { min: 0, max: 24000, rate: 0.1 },
+  { min: 24001, max: 32333, rate: 0.25 },
+  { min: 32334, max: Infinity, rate: 0.3 }
+];
+const nhifBrackets = [
+  { min: 0, max: 5999, deduction: 150 },
+  { min: 6000, max: 7999, deduction: 300 },
+  { min: 8000, max: 11999, deduction: 400 },
+  { min: 12000, max: 14999, deduction: 500 },
+  { min: 15000, max: 19999, deduction: 600 },
+  { min: 20000, max: 24999, deduction: 750 },
+  { min: 25000, max: 29999, deduction: 850 },
+  { min: 30000, max: 34999, deduction: 900 },
+  { min: 35000, max: 39999, deduction: 950 },
+  { min: 40000, max: 44999, deduction: 1000 },
+  { min: 45000, max: 49999, deduction: 1100 },
+  { min: 50000, max: 59999, deduction: 1200 },
+  { min: 60000, max: 69999, deduction: 1300 },
+  { min: 70000, max: 79999, deduction: 1400 },
+  { min: 80000, max: 89999, deduction: 1500 },
+  { min: 90000, max: 99999, deduction: 1600 },
+  { min: 100000, max: Infinity, deduction: 1700 }
+];
+const nssfRate = 0.06;
+const grossSalary = Number(basicSalary) + Number(benefits)
+// Calculate PAYE 
+let tax = 0;
+let taxable = grossSalary
+for (let bracket of taxBrackets) {
+  if (bracket.min <= taxable && taxable <= bracket.max) {
+    tax += (taxable - bracket.min) * bracket.rate;
   }
-  return `PAYE: ${Tax}`
 }
+// Calculate NHIF 
+const nhifBracket = nhifBrackets.find(bracket => bracket.min <= grossSalary && grossSalary <= bracket.max);
+const nhif = nhifBracket ? nhifBracket.deduction : 0;
+//Calculate NSSF
+const nssf= grossSalary * nssfRate
+//Calculate NetPay
+const netSalary = grossSalary - tax - nhif - nssf
 
-function grossSalary(salary){
-  const gross = salary - Tax
-  return `Gross Salary: ${gross}`
-}
-function NHIF(gross){
-  gross;
-  let deduct;
-  switch(gross){
-    case gross <= 5999:
-      deduct = 150
-      break;
-    case gross >= 6000 && gross <= 7999:
-      deduct = 300
-      break;
-    case gross >= 8000 && gross <= 11999:
-      deduct = 400
-      break;
-    case gross >= 12000 && gross <= 14999:
-      deduct = 500
-      break;
-    case gross >= 15000 && gross <= 19999:
-      deduct = 600
-      break;
-    case gross >= 20000 && gross <= 24999:
-      deduct = 750
-      break;
-    case gross >= 25000 && gross <= 29999:
-      deduct = 850
-      break;
-    case gross >= 30000 && gross <= 34999:
-      deduct = 900
-      break;
-    case gross >= 35000 && gross <= 39999:
-      deduct = 950
-      break;
-    case gross >= 40000 && gross <= 44999:
-      deduct = 1000
-      break;
-    case gross >= 45000 && gross <= 49999:
-      deduct = 1100
-      break;
-    case gross >= 50000 && gross <= 59999:
-      deduct = 1200
-      break;
-    case gross >= 60000 && gross <= 69999:
-      deduct = 1300
-      break;
-    case gross >= 70000 && gross <= 79999:
-      deduct =1400
-      break;
-    case gross >= 80000 && gross <= 89999:
-      deduct = 1500
-      break;
-    case gross >= 90000 && gross <= 99999:
-      deduct = 1600
-      break;
-    case gross >= 100000:
-      deduct = 1700
-      break;
-  }
-  return `NHIF deduction: ${deduct}`
-}
-function netSalary(gross, deduct){
-  let netPay = gross - deduct
-  return `Ner Salary: ${netPay}`
-}
-console.log(NHIF(Number(salary)))
-console.log(netSalary(Number(salary)))
-
+// Output
+console.log(`Gross Salary: ${grossSalary}`);
+console.log(`PAYE: ${tax}`);
+console.log(`NHIF Deductions: ${nhif}`);
+console.log(`NSSF Deductions: ${nssf}`);
+console.log(`Net Salary: ${netSalary}`);
